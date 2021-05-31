@@ -9,3 +9,19 @@ declare type AccountToken = {
   id: number;
   token: string;
 };
+
+declare type PageInfoType = {
+  page_info?: {
+    page: number;
+    per_page: number;
+  };
+  conditions?: conditionsType[];
+};
+
+/** 数据接口筛选条件结构（具体根据与后端商量结构为准） */
+declare type conditionsType = {
+  field_name: string;
+  field_type: string;
+  type: number;
+  value?: any;
+}
