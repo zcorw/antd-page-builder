@@ -14,7 +14,7 @@ import * as filterFun from './filter';
 declare const filterType: ['select', 'split', 'keyword', 'dateRange', 'startDate', 'endDate'];
 
 export type ActionType = TableActionRef & {
-  getFilter: () => any;
+  getFilter: () => conditionsType[];
 }
 
 export type propsType<
@@ -22,7 +22,7 @@ export type propsType<
   U extends {
     [key: string]: any;
   } = {}
-  > = Exclude<ProTableProps<T, U>, 'actionRef'> & {
+  > = Omit<ProTableProps<T, U>, 'actionRef'> & {
     /** 表单字段 */
     tableColumns: ProColumns<T>[];
     /** 
@@ -73,7 +73,7 @@ const filerColumns = (value: any, key: any, type?: typeof filterType[number] | P
 const CommonTable = <T extends {}>(props: propsType<T>): React.ReactElement => {
   const actionRef = useRef<ActionType>();
   const { actionRef: propsActionRef, sort, rowKey = 'id' } = props;
-  const [filter, setFileter] = useState<any>();
+  const [filter, setFileter] = useState<conditionsType[]>();
 
   useEffect(() => {
     if (typeof propsActionRef === 'function' && actionRef.current) {
