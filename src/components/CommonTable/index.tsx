@@ -71,7 +71,7 @@ const filerColumns = (value: any, key: any, type?: typeof filterType[number] | P
  * @param props 
  */
 const CommonTable = <T extends {}>(props: propsType<T>): React.ReactElement => {
-  const actionRef = useRef<ActionType>();
+  const actionRef = useRef<ActionType>({});
   const { actionRef: propsActionRef, sort, rowKey = 'id' } = props;
   const [filter, setFileter] = useState<conditionsType[]>();
 

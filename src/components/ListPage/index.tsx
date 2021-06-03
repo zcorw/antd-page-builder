@@ -11,7 +11,7 @@ export type { ActionType } from './Table';
 export type ColunmsType<T> = propsType<T>['columns'];
 export type SearchType<T> = propsType<T>['search'];
 
-const ListPage = <T extends any>(props: propsType<T> & { title?: string, extra?: React.ReactNode }) => {
+const ListPage = <T extends object>(props: propsType<T> & { title?: string, extra?: React.ReactNode }) => {
   const { title, extra, ...p } = props;
   return (
     <PageContainer header={{ title, extra }}>
