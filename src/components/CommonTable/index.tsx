@@ -120,47 +120,8 @@ const CommonTable = <T extends {}>(props: propsType<T>): React.ReactElement => {
       filter: [],
     };
   }
-  const sortFunc = (s: [keyof T, "ascend" | "descend"], a: any, b: any) => {
-    if (a[s[0]] === undefined) {
-      return 1;
-    }
-    if (b[s[0]] === undefined) {
-      return -1;
-    }
-    if (typeof a[s[0]] === 'string') {
-      const nameA: string = a[s[0]] as any;
-      const nameB: string = b[s[0]] as any;
-      const ascendSort = () => {
-        const upperA = nameA.toLocaleUpperCase();
-        const upperB = nameB.toLocaleUpperCase();
-        if (upperA < upperB) {
-          return -1;
-        }
-        if (upperA > upperB) {
-          return 1;
-        }
-        return 0
-      }
-      if (s[1] === 'ascend') {
-        return ascendSort();
-      }
-      return -ascendSort();
-    }
-    if (typeof a[s[0]] === 'number') {
-      const nameA: number = a[s[0]] as any;
-      const nameB: number = b[s[0]] as any;
-      const ascendSort = () => {
-        return nameA - nameB;
-      }
-      if (s[1] === 'ascend') {
-        return ascendSort();
-      }
-      return -ascendSort();
-    }
-    return 0;
-  }
   /** 数据请求 */
-  const request = (params: any, current: number, pageSize: number) => {
+  const request = (params: any, current: number, pageSize: number, sorter: Record<string, "ascend" | "descend" | null>) => {
     const customParams =
             _.chain(searchCol)
               .map((col) => {
@@ -178,13 +139,9 @@ const CommonTable = <T extends {}>(props: propsType<T>): React.ReactElement => {
               per_page: pageSize,
             },
             conditions: customParams,
+            sort: sorter,
           }).then((res) => {
             const {list} = res;
-            if (sort) {
-              sort.forEach(s => {
-                list.sort((a, b) => sortFunc(s, a, b))
-              });
-            }
             return {
               data: list,
               success: true,
@@ -200,17 +157,17 @@ const CommonTable = <T extends {}>(props: propsType<T>): React.ReactElement => {
       pagination={{ pageSize: 10 }}
       columns={columns}
       rowSelection={onSelect ? { onChange: onSelect } : undefined}
-      request={(params) => {
+      request={(params, sorter) => {
         const current = params.current || 1;
         const pageSize = params.pageSize || 20;
         if (typeof tableData === 'function') {
-          return request(params, current, pageSize);
+          return request(params, current, pageSize, sorter);
         }
         throw new Error('tableData type error');
       }}
       rowKey={rowKey}
       search={{
-        labelWidth: 120
+        labelWidth: 120,
       }}
       {...p}
       actionRef={(current) => {

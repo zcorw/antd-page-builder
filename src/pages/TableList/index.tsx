@@ -1,9 +1,9 @@
 import React from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import ListPage, { ColunmsType, SearchType } from '@/components/ListPage';
-import { useMonth, useSelect, useText } from '@/hooks/condition';
+import { useMonth, useRangeDate, useSelect, useText } from '@/hooks/condition';
 import { queryRule } from './service';
-import {TableListItem} from './data.d';
+import { TableListItem } from './data.d';
 
 const TableList: React.FC = () => {
   /**
@@ -93,22 +93,16 @@ const TableList: React.FC = () => {
   ];
 
   const search: SearchType<TableListItem> = [
-    useText(<FormattedMessage
-      id="pages.searchTable.updateForm.ruleName.nameLabel"
-      defaultMessage="Rule name"
-    />, 'name'),
-    useText(<FormattedMessage id="pages.searchTable.titleDesc" defaultMessage="Description" />, 'desc'),
-    useText(<FormattedMessage
-      id="pages.searchTable.titleCallNo"
-      defaultMessage="Number of service calls"
-    />, 'callNo'),
-    useSelect(<FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="Status" />, 'status', new Map([
-      [0, <FormattedMessage id="pages.searchTable.nameStatus.default" defaultMessage="Shut down" />],
-      [1, <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />],
-      [2, <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />],
-      [3, <FormattedMessage id="pages.searchTable.nameStatus.abnormal" defaultMessage="Abnormal" />],
+    useText(intl.formatMessage({ id: 'pages.searchTable.updateForm.ruleName.nameLabel', defaultMessage: "Rule name" }), 'name'),
+    useText(intl.formatMessage({ id: "pages.searchTable.titleDesc", defaultMessage: "Description" }), 'desc'),
+    useText(intl.formatMessage({ id: "pages.searchTable.titleCallNo", defaultMessage: "Number of service calls" }), 'callNo'),
+    useSelect(intl.formatMessage({ id: "pages.searchTable.titleStatus", defaultMessage: "Status" }), 'status', new Map([
+      [0, intl.formatMessage({ id: "pages.searchTable.nameStatus.default", defaultMessage: "Shut down" })],
+      [1, intl.formatMessage({ id: "pages.searchTable.nameStatus.running", defaultMessage: "Running" })],
+      [2, intl.formatMessage({ id: "pages.searchTable.nameStatus.online", defaultMessage: "Online" })],
+      [3, intl.formatMessage({ id: "pages.searchTable.nameStatus.abnormal", defaultMessage: "Abnormal" })],
     ])),
-    useMonth(<FormattedMessage id="pages.searchTable.titleUpdatedAt" defaultMessage="Last scheduled time" />, 'updatedAt'),
+    useRangeDate(intl.formatMessage({ id: "pages.searchTable.titleUpdatedAt", defaultMessage: "Last scheduled time" }), 'updatedAt'),
   ];
 
   return <ListPage
@@ -116,6 +110,7 @@ const TableList: React.FC = () => {
     search={search}
     access="table"
     add
+    edit
     dataSource={queryRule}
   />
 }

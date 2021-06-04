@@ -277,6 +277,13 @@ const Table = <T extends object = {}>(props: propsType<T>) => {
     form.current?.reload();
   }
 
+  const customProps: {search?: ProTableProps<T, {}>['search'], formRef?: React.MutableRefObject<FormInstance<any> | undefined>} = {};
+  if (searchConfig) {
+    customProps.search = searchConfig;
+  }
+  if (formProps) {
+    customProps.formRef = formProps;
+  }
   return (
     <>
       <CheckTable
@@ -286,8 +293,7 @@ const Table = <T extends object = {}>(props: propsType<T>) => {
         tableData={dataSource}
         onSelect={onSelect}
         buttons={buttons}
-        search={searchConfig}
-        formRef={formProps}
+        {...customProps}
         {...p}
       />
       {createImportButton(importProps, exportVisible, closeImport)}

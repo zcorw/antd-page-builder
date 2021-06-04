@@ -16,6 +16,7 @@ declare type PageInfoType = {
     per_page: number;
   };
   conditions?: conditionsType[];
+  sort: Record<string, "ascend" | "descend" | null>;
 };
 
 /** 数据接口筛选条件结构（具体根据与后端商量结构为准） */

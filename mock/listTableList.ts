@@ -10,7 +10,7 @@ const genList = (current: number, pageSize: number) => {
   for (let i = 0; i < pageSize; i += 1) {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
-      key: index,
+      id: index,
       disabled: i % 6 === 0,
       href: 'https://ant.design',
       avatar: [
@@ -34,61 +34,12 @@ const genList = (current: number, pageSize: number) => {
 let tableListDataSource = genList(1, 100);
 
 function getRule(req: Request, res: Response, u: string) {
-  let realUrl = u;
-  if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
-    realUrl = req.url;
-  }
-  const { current = 1, pageSize = 10 } = req.query;
-  const params = (parse(realUrl, true).query as unknown) as TableListParams;
+  const { page = 1, per_page = 10 } = req.body.page_info;
 
   let dataSource = [...tableListDataSource].slice(
-    ((current as number) - 1) * (pageSize as number),
-    (current as number) * (pageSize as number),
+    ((page as number) - 1) * (per_page as number),
+    (page as number) * (per_page as number),
   );
-  const sorter = JSON.parse(params.sorter as any);
-  if (sorter) {
-    dataSource = dataSource.sort((prev, next) => {
-      let sortNumber = 0;
-      Object.keys(sorter).forEach((key) => {
-        if (sorter[key] === 'descend') {
-          if (prev[key] - next[key] > 0) {
-            sortNumber += -1;
-          } else {
-            sortNumber += 1;
-          }
-          return;
-        }
-        if (prev[key] - next[key] > 0) {
-          sortNumber += 1;
-        } else {
-          sortNumber += -1;
-        }
-      });
-      return sortNumber;
-    });
-  }
-  if (params.filter) {
-    const filter = JSON.parse(params.filter as any) as {
-      [key: string]: string[];
-    };
-    if (Object.keys(filter).length > 0) {
-      dataSource = dataSource.filter((item) => {
-        return Object.keys(filter).some((key) => {
-          if (!filter[key]) {
-            return true;
-          }
-          if (filter[key].includes(`${item[key]}`)) {
-            return true;
-          }
-          return false;
-        });
-      });
-    }
-  }
-
-  if (params.name) {
-    dataSource = dataSource.filter((data) => data.name.includes(params.name || ''));
-  }
   const result = {
     list: dataSource,
     total_count: tableListDataSource.length,
@@ -164,6 +115,6 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
 }
 
 export default {
-  'GET /api/rule': getRule,
+  'POST /api/rule/list': getRule,
   'POST /api/rule': postRule,
 };

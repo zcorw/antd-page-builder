@@ -1,4 +1,54 @@
-﻿export default [
+﻿type RouteType = {
+  path: string;
+  name: string;
+  access?: string;
+  icon?: string;
+  component: string;
+  hideInMenu?: true;
+}
+declare const PointType: ['add', 'edit', 'detail'];
+const pointTitle = {
+  add: '添加%s',
+  edit: '编辑%s',
+  detail: '%s详情',
+}
+const pointPath = {
+  add: '/add',
+  edit: '/edit/:id?',
+  detail: '/detail/:id?',
+}
+const pointComponent = {
+  add: '/edit',
+  edit: '/edit',
+  detail: '/detail',
+}
+const routeCreator = (
+  title: string,
+  path: string,
+  access: string,
+  component: string,
+  options?: { curd?: { type: typeof PointType[number], component?: string }[], icon?: string, title?: string }
+): RouteType[] => {
+  const routes: RouteType[] = [];
+  if (options?.curd) {
+    options.curd.forEach(route => routes.push({
+      path: `${path}${pointPath[route.type]}`,
+      name: pointTitle[route.type].replace('%s', title),
+      component: route.component || `${component}${pointComponent[route.type]}`,
+      hideInMenu: true,
+    }));
+  }
+  routes.unshift({
+    path,
+    name: options?.title || `${title}管理`,
+    access,
+    component,
+    icon: options?.icon,
+  });
+  return [...routes];
+}
+
+export default [
   {
     path: '/',
     component: '../layouts/BlankLayout',

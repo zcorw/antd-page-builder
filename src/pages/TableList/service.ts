@@ -7,8 +7,9 @@ type ReturnType<T> = {
 }
 
 export async function queryRule(params?: PageInfoType): Promise<ReturnType<TableListItem>> {
-  return request('/api/rule', {
-    params,
+  return request('/api/rule/list', {
+    method: 'post',
+    data: params,
   });
 }
 

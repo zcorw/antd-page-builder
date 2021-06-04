@@ -4,21 +4,21 @@ import moment, { Moment } from "moment";
 import {ProSchema} from '@ant-design/pro-utils';
 import {SearchType} from '@/components/ListPage';
 
-export const useText = <T extends object>(title: string | React.ReactNode, name: string, placeholder?: string): NonNullable<SearchType<T>>[number] => useMemo(() => ({
+export const useText = <T extends object>(title: string, name: string, placeholder?: string): NonNullable<SearchType<T>>[number] => useMemo(() => ({
   title,
   key: name,
   valueType: 'text',
   placeholder: placeholder || `请输入${title}`,
 }), []);
 
-export const useSelect = <T extends object>(title: string | React.ReactNode, key: string, options: Map<number, string | React.ReactNode>): NonNullable<SearchType<T>>[number] => useMemo(() => ({
+export const useSelect = <T extends object>(title: string, key: string, options: Map<number, string>): NonNullable<SearchType<T>>[number] => useMemo(() => ({
     title,
     key,
     valueType: 'select',
     valueEnum: options,
   }), []);
 
-export const useRangeDate = <T extends object>(title: string | React.ReactNode, key: string, ranges?: { [key: string]: [Moment, Moment] }): NonNullable<SearchType<T>>[number] => useMemo(() => ({
+export const useRangeDate = <T extends object>(title: string, key: string, ranges?: { [key: string]: [Moment, Moment] }): NonNullable<SearchType<T>>[number] => useMemo(() => ({
   title,
   valueType: 'dateRange',
   key,
@@ -33,7 +33,7 @@ export const useRangeDate = <T extends object>(title: string | React.ReactNode, 
   }
 }), []);
 
-export const useMonth = <T extends object>(title: string | React.ReactNode, key: string): NonNullable<SearchType<T>>[number] => useMemo(() => {
+export const useMonth = <T extends object>(title: string, key: string): NonNullable<SearchType<T>>[number] => useMemo(() => {
   return {
     title,
     key,
