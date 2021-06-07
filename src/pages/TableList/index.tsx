@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import ListPage, { ColunmsType, SearchType } from '@/components/ListPage';
-import { useMonth, useRangeDate, useSelect, useText } from '@/hooks/condition';
+import { useRangeDate, useSelect, useText } from '@/hooks/condition';
 import { queryRule } from './service';
 import { TableListItem } from './data.d';
 
@@ -105,12 +105,14 @@ const TableList: React.FC = () => {
     useRangeDate(intl.formatMessage({ id: "pages.searchTable.titleUpdatedAt", defaultMessage: "Last scheduled time" }), 'updatedAt'),
   ];
 
-  return <ListPage
+  return <ListPage<TableListItem>
+    title={intl.formatMessage({ id: 'list.table-list', defaultMessage: '查询表格' })}
     columns={columns}
     search={search}
     access="table"
     add
     edit
+    detail
     dataSource={queryRule}
   />
 }

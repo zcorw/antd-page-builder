@@ -58,8 +58,9 @@ export default {
   'pages.searchTable.new': '新建',
   'pages.searchTable.chosen': '已选择',
   'pages.searchTable.item': '项',
-  'pages.searchTable.totalServiceCalls': '服务调用次数总计',
+  'pages.searchTable.totalServiceCalls': '服务可调用次数总计',
   'pages.searchTable.tenThousand': '万',
   'pages.searchTable.batchDeletion': '批量删除',
   'pages.searchTable.batchApproval': '批量审批',
+  'pages.searchTable.user': '创建者',
 };

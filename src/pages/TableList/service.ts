@@ -13,6 +13,14 @@ export async function queryRule(params?: PageInfoType): Promise<ReturnType<Table
   });
 }
 
+export async function getRule(id: number): Promise<TableListItem> {
+  return request('/api/rule', {
+    params: {
+      id,
+    }
+  }).then((res) => res.data);
+}
+
 export async function removeRule(params: { key: number[] }) {
   return request('/api/rule', {
     method: 'POST',

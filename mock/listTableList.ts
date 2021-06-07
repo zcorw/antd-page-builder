@@ -114,7 +114,25 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
   res.json(result);
 }
 
+function getItem(req: Request, res: Response) {
+  const {id} = req.query as {id: string};
+  console.log("🚀 ~ file: listTableList.ts ~ line 119 ~ getItem ~ id", typeof id)
+  if (typeof +id !== 'number') {
+    return {
+      success: false,
+    }
+  }
+  const item = tableListDataSource.find(data => data.id === +id);
+  console.log("🚀 ~ file: listTableList.ts ~ line 126 ~ getItem ~ item", item)
+
+  return res.json({
+    data: item,
+    success: true,
+  });
+}
+
 export default {
   'POST /api/rule/list': getRule,
   'POST /api/rule': postRule,
+  'GET /api/rule': getItem,
 };

@@ -27,13 +27,13 @@ const routeCreator = (
   path: string,
   access: string,
   component: string,
-  options?: { curd?: { type: typeof PointType[number], component?: string }[], icon?: string, title?: string }
+  options?: { curd?: { type: typeof PointType[number], name?: string, component?: string }[], icon?: string, title?: string }
 ): RouteType[] => {
   const routes: RouteType[] = [];
   if (options?.curd) {
     options.curd.forEach(route => routes.push({
       path: `${path}${pointPath[route.type]}`,
-      name: pointTitle[route.type].replace('%s', title),
+      name: route.name || pointTitle[route.type].replace('%s', title),
       component: route.component || `${component}${pointComponent[route.type]}`,
       hideInMenu: true,
     }));
@@ -100,13 +100,14 @@ export default [
                   },
                 ],
               },
-              {
-                name: 'list.table-list',
-                icon: 'table',
-                path: '/list',
-                component: './TableList',
-                access: 'table',
-              },
+              ...routeCreator('list.table-list', '/list', 'table', './TableList', {
+                curd: [{
+                  type: 'detail',
+                  name: 'list.table-detail',
+                }],
+                title: 'list.table-list'
+              }
+              ),
               {
                 component: './404',
               },
